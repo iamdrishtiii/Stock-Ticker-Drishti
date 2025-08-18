@@ -38,13 +38,14 @@ const Home = ({ initialResults, initialSearchTerm }) => {
         <main className='max-w-[960px] mx-0 my-auto sm:px-24 py-12'>
           <h1 className='text-5xl font-bold mb-4 flex justify-center border-b-4 shadow-lg py-2 text-green-300'>Stock Ticker Search</h1>
 
-          <form onChange={handleSearch}>
+          <form  className='w-[100%] px-4 sm:px-12 py-3 border text-white font-semibold rounded-full shadow-lg mb-8 flex flex-row'>
             <input
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               placeholder='Search using Symbol or Name (e.g.,RELIANCE)'
-              className='w-[100%] px-4 sm:px-12 py-3 border text-white font-semibold rounded-full shadow-lg mb-8'
+              className='w-[100%]'
             />
+            <button onClick={handleSearch} className='bg-blue-400 px-2 py-1 rounded-xl'>Search</button>
           </form>
 
           {initialResults.length > 0 && (
