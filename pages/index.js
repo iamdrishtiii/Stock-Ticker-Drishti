@@ -1,115 +1,142 @@
-import Image from "next/image";
-import { Geist, Geist_Mono } from "next/font/google";
+import Head from 'next/head'
+import { useRouter } from 'next/router'
+import React, { useEffect, useState } from 'react'
+import R from '../public/R.jpeg'
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
+const Home = ({ initialResults, initialSearchTerm }) => {
+  const router = useRouter()
+  const [movers, setMovers] = useState(null);
+  const [searchTerm, setSearchTerm] = useState(initialSearchTerm || "")
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+  const handleSearch = (e) => {
+    e.preventDefault();
+    if (searchTerm.trim().length >= 2) {
+      router.push(`/?index_iamdrishtiii=${encodeURIComponent(searchTerm)}`)
+    }
+  }
 
-export default function Home() {
+  useEffect(() => {
+    fetchMovers();
+  }, []);
+
+  const fetchMovers = async () => {
+    try {
+      const response = await fetch('https://portal.tradebrains.in/api/assignment/index/NIFTY/movers/');
+      const data = await response.json();
+      setMovers(data);
+    } catch (error) {
+      console.error('Failed to fetch movers:', error);
+    }
+  };
+
   return (
-    <div
-      className={`${geistSans.className} ${geistMono.className} font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20`}
-    >
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              pages/index.js
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
+    <>
+      <div className="max-h-full min-h-screen" style={{ backgroundImage: "url('/R.jpeg')", backgroundSize: "cover", backgroundPosition: "center", height: "screen" }}>
+        <Head>
+          <title>Stocks</title>
+        </Head>
+        <main className='max-w-[960px] mx-0 my-auto sm:px-24 py-12'>
+          <h1 className='text-5xl font-bold mb-4 flex justify-center border-b-4 shadow-lg py-2 text-green-300'>Stock Ticker Search</h1>
+
+          <form onChange={handleSearch}>
+            <input
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              placeholder='Search using Symbol or Name (e.g.,RELIANCE)'
+              className='w-[100%] px-4 sm:px-12 py-3 border text-white font-semibold rounded-full shadow-lg mb-8'
             />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
-  );
+          </form>
+
+          {initialResults.length > 0 && (
+            <ul>
+              {initialResults.map((result) => (
+                <li key={result.symbol}
+                  onClick={() =>
+                    router.push(`/stock/${encodeURIComponent(result.symbol)}`).then(() => {
+                      setSearchTerm("")
+                    })
+                  }
+                  className="hover:bg-gray-300 cursor-pointer px-2 py-1 bg-white m-1"
+                >
+                  <strong>{result.symbol}</strong>{" "}
+                  <span className='text-gray-600'>{result.name}</span>
+                </li>
+              ))}
+            </ul>
+          )}
+
+          {movers && (
+            <div className='mt-12'>
+              <h2 className='text-white text-lg '>NIFTY Market Movers</h2>
+
+              <div className='flex flex-wrap gap-4'>
+                <div className='flex-1 min-w-[250px]'>
+                  <h3 className='text-green-300 pb-2'>Top Gainers📈</h3>
+                  {movers.gainers.slice(0, 5).map((stock, index) => (
+                    <div
+                      key={index}
+                      onClick={() => router.push(`/stock/${stock.symbol}`)}
+                      className='p-2 mb-2 cursor-pointer rounded-lg bg-white'
+                    >
+                      <strong>{stock.symbol}</strong> - ₹{stock.close}
+                      <span className='text-green-600 float-right'>+{stock.percent.toFixed(2)}%</span>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="flex-1 min-w-[250px]">
+                  <h3 className='text-red-700 pb-2'>Top Losers📉</h3>
+                  {movers.losers.slice(0, 5).map((stock, index) => (
+                    <div
+                      key={index}
+                      onClick={() => router.push(`/stock/${stock.symbol}`)}
+                      className='p-2 mb-2 cursor-pointer rounded-lg bg-white'
+                    >
+                      <strong>{stock.symbol}</strong> - ₹{stock.close}
+                      <span className='text-red-600 float-right'>{stock.percent.toFixed(2)}%</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          )}
+
+        </main>
+      </div>
+
+    </>
+  )
+}
+
+export default Home
+
+export async function getServerSideProps(context) {
+  const searchTerm = context.query.index_iamdrishtiii || "";
+  let results = [];
+
+  if (searchTerm.trim().length >= 2) {
+    try {
+      const response = await fetch(
+        `https://portal.tradebrains.in/api/assignment/search?keyword=${encodeURIComponent(
+          searchTerm
+        )}&length=10`,
+        { headers: { Accept: "application/json" } }
+      )
+      const alldata = await response.json();
+      console.log(alldata)
+      results = Array.isArray(alldata) ? alldata.map((data) => ({
+        symbol: data.symbol || data.SYMBOl || data.ticker || "",
+        name: data.name || data.NAME || data.company || data.title || ""
+      })).filter((data) => data.symbol) : []
+      console.log(results)
+    } catch (error) {
+      console.log("SSR Fetch error :", error)
+    }
+  }
+  return {
+    props: {
+      initialResults: results,
+      initialsearchTerm: searchTerm,
+    }
+  }
 }
