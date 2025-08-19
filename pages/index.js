@@ -72,7 +72,7 @@ const Home = ({ initialResults, initialSearchTerm }) => {
 
               <div className='flex flex-wrap gap-4'>
                 <div className='flex-1 min-w-[250px]'>
-                  <h3 className='text-green-300 pb-2'>Top Gainers📈</h3>
+                  <h3 className='text-green-700 py-1 px-2 bg-white w-fit mb-2'>Top Gainers📈</h3>
                   {movers.gainers.slice(0, 5).map((stock, index) => (
                     <div
                       key={index}
@@ -86,7 +86,7 @@ const Home = ({ initialResults, initialSearchTerm }) => {
                 </div>
 
                 <div className="flex-1 min-w-[250px]">
-                  <h3 className='text-red-700 pb-2'>Top Losers📉</h3>
+                  <h3 className='text-red-700 py-1 px-2 bg-white w-fit mb-2'>Top Losers📉</h3>
                   {movers.losers.slice(0, 5).map((stock, index) => (
                     <div
                       key={index}
