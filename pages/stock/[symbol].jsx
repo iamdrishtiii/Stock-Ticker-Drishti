@@ -64,7 +64,7 @@ export default function StockDetails({ stockData, symbol }) {
 
                      <div className="p-2 sm:p-8 rounded-3xl max-w-[600px] mx-0 my-auto bg-[#005ca3ff]">
                             <button
-                                   onClick={() => router.back()}
+                                   onClick={() => router.push("/")}
                                    className="px-2 py-1 mb-5 bg-gray-100 border border-blue-500 rounded-xl cursor-pointer " >
                                    ← Back to Stock
                             </button>
